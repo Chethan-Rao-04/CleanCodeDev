@@ -2,16 +2,13 @@ package model;
 
 import common.Colour;
 import common.Direction;
-import common.InvalidPositionException;
 import common.Position;
 import utility.Log;
 
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import static utility.MovementUtil.step;
 import static utility.MovementUtil.stepOrNull;
 
 /**
@@ -35,15 +32,16 @@ public class Knight extends BasePiece {
      **/
     @Override
     protected void setupDirections() {
-        this.directions = new Direction[][] {{Direction.FORWARD,Direction.FORWARD,Direction.LEFT},
-                {Direction.FORWARD,Direction.FORWARD,Direction.RIGHT},{Direction.FORWARD,Direction.LEFT,Direction.LEFT},
-                {Direction.FORWARD,Direction.RIGHT,Direction.RIGHT},{Direction.BACKWARD,Direction.BACKWARD,Direction.LEFT},
-                {Direction.BACKWARD,Direction.BACKWARD,Direction.RIGHT},{Direction.BACKWARD,Direction.LEFT,Direction.LEFT},
-                {Direction.BACKWARD,Direction.RIGHT,Direction.RIGHT},{Direction.LEFT,Direction.LEFT,Direction.FORWARD},
-                {Direction.LEFT,Direction.LEFT,Direction.BACKWARD},{Direction.LEFT,Direction.FORWARD,Direction.FORWARD},
-                {Direction.LEFT,Direction.BACKWARD,Direction.BACKWARD},{Direction.RIGHT,Direction.RIGHT,Direction.FORWARD},
-                {Direction.RIGHT,Direction.RIGHT,Direction.BACKWARD},{Direction.RIGHT,Direction.FORWARD,Direction.FORWARD},
-                {Direction.RIGHT,Direction.BACKWARD,Direction.BACKWARD}};
+        this.directions = new Direction[][] {
+                {Direction.FORWARD, Direction.FORWARD, Direction.LEFT},
+                {Direction.FORWARD, Direction.FORWARD, Direction.RIGHT},
+                {Direction.BACKWARD, Direction.BACKWARD, Direction.LEFT},
+                {Direction.BACKWARD, Direction.BACKWARD, Direction.RIGHT},
+                {Direction.LEFT, Direction.LEFT, Direction.FORWARD},
+                {Direction.LEFT, Direction.LEFT, Direction.BACKWARD},
+                {Direction.RIGHT, Direction.RIGHT, Direction.FORWARD},
+                {Direction.RIGHT, Direction.RIGHT, Direction.BACKWARD}
+        };
     }
 
     /**
@@ -53,29 +51,19 @@ public class Knight extends BasePiece {
      * @return Set of possible positions a piece is allowed to move
      * */
     @Override
-    public Set<Position> getHighlightPolygons(Map<Position, BasePiece> boardMap, Position start) {
-        Collection<Position> wallPiecePositions = getWallPieceMapping(boardMap).values();
+    public Set<Position> getPossibleMoves(Map<Position, BasePiece> boardMap, Position start) {
         Set<Position> positionSet = new HashSet<>();
         BasePiece mover = this;
         Direction[][] steps = this.directions;
 
-        for(Direction[] step: steps) {
+        for (Direction[] step : steps) {
             Position end = stepOrNull(mover, step, start);
 
-            if(positionSet.contains(end) || wallPiecePositions.contains(end)) {
-                continue;
-            }
-
-            if(end != null) {
+            if (end != null) {
                 BasePiece target = boardMap.get(end);
 
-                if(target!=null) {
-                    if(target.getColour()!=mover.getColour()) {
-                        Log.d(TAG, "position enemy: "+end);
-                        positionSet.add(end);
-                    }
-                } else {
-                    Log.d(TAG, "position: "+end);
+                if (target == null || target.getColour() != mover.getColour()) {
+                    Log.d(TAG, "position: " + end);
                     positionSet.add(end);
                 }
             }
@@ -90,6 +78,6 @@ public class Knight extends BasePiece {
      * */
     @Override
     public String toString() {
-        return this.colour.toString()+"N";
+        return this.colour.toString() + "N";
     }
 }

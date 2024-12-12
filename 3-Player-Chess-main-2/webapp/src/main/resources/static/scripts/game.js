@@ -1,218 +1,117 @@
-/**
- * maps the piece token to the corresponding unicode character
- * @type {{P: string, Q: string, R: string, B: string, K: string, N: string}}
- */
+/* Updated game.js */
+
 const pieceMap = {
-    'R': '♖',
-    'N': '♘',
-    'B': '♗',
-    'Q': '♕',
-    'K': '♔',
-    'P': '♙',
-    'J': '⎈',
-    'W': '▩'
+    'R': '\u2656', 'N': '\u2658', 'B': '\u2657', 'Q': '\u2655', 'K': '\u2654', 'P': '\u2659',
+    'r': '\u265C', 'n': '\u265E', 'b': '\u265D', 'q': '\u265B', 'k': '\u265A', 'p': '\u265F'
 };
 
-/**
- * maps the letters R,G,B to the corresponding color string
- * @type {{R: string, B: string, G: string}}
- */
-const colorMap = {'R':'Red', 'G':'Green', 'B': 'Blue'};
+const colorMap = {'W': 'White', 'B': 'Black'};
 
-/**
- * global variable storing the current theme
- * @type {string}
- */
-let theme = 'arialTheme'
+let theme = 'arialTheme';  // Default theme
 
-/**
- * displays the current player inside p element with the id "playerdisplay"
- * @param color color of the current player as single character (R, G, B)
- */
-function updateCurrenPlayer(color){
+// Initialize the game when the page loads
+function bodyLoaded() {
+    console.log("Body loaded");
+    renderBoard(); // Ensure board is rendered
+    requestUpdatedBoard();
+    requestCurrentPlayer();
+}
+
+// Render the chessboard squares dynamically
+function renderBoard() {
+    const boardGroup = document.getElementById('board');
+    boardGroup.innerHTML = ''; // Clear existing squares
+
+    for (let row = 0; row < 8; row++) {
+        for (let col = 0; col < 8; col++) {
+            const square = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+            square.setAttribute('x', col * 120);
+            square.setAttribute('y', row * 120);
+            square.setAttribute('width', 120);
+            square.setAttribute('height', 120);
+            square.setAttribute('fill', (row + col) % 2 === 0 ? '#f0d9b5' : '#b58863'); // Checkerboard pattern
+            square.setAttribute('id', `${String.fromCharCode(97 + col)}${8 - row}`);
+            square.addEventListener('click', () => sendPolygonClicked(square.id));
+            boardGroup.appendChild(square);
+        }
+    }
+}
+
+// Update the current player based on the server response
+function updateCurrentPlayer(color) {
     const colourName = colorMap[color];
     const playerName = localStorage.getItem(colourName);
 
     const p_name = document.getElementById('pl-name');
-    p_name.textContent = playerName;
+    p_name.textContent = playerName || 'Unknown';
 
     const p_colour = document.getElementById('pl-colour');
-    p_colour.style.color = colourName;
+    p_colour.style.color = colourName === 'White' ? '#FFFFFF' : '#000000'; // White or Black
 }
 
-/**
- * updates the current theme
- * @param name name of the theme (arialTheme, freeSerifTheme, dejaVuSansTheme)
- */
-function updateTheme(name){
-    console.log('New Font: ' + name);
-    theme = name;
-    const textElements = document.querySelectorAll('text');
-    textElements.forEach(function(element) {
-        element.setAttribute('class', name);
-    });
-}
-
-/**
- * highlights a specific set of polygons
- * @param data set of polygons as JSON array
- */
-function displayPossibleMoves(data){
-    console.log('Highlighted Polygons: ' + data);
-    removeHighlighting();
-    data.forEach(function (polygonId) {
-        const polygon = document.getElementById(polygonId);
-        if(polygon != null){
-            polygon.classList.add('highlight')
-        }
-
-    });
-}
-
-/**
- * removes the highlighting of all polygons
- */
-function removeHighlighting(){
-    const polygons = document.querySelectorAll('polygon');
-    polygons.forEach( polygon => polygon.classList.remove('highlight'));
-}
-
-/**
- * updates the chessboard with the new state
- * @param data new board state with the updated piece positions, e.g. {Ba1: "BR", Ba2: "BP", ...}
- */
+// Update the board after a response from the server
 function updateBoard(response) {
-    clearBoard();
+    clearBoard();  // Clear previous board state
     console.log('New Board Configuration:', response);
-    let board = response['board'];
-    let highlightedPolygons = response['highlightedPolygons'];
-    let winner = response['winner'];
-    if(response['gameOver']){
-        showGameOverPopup(response['winner']);
+
+    const board = response['board'];  // Board positions and pieces
+    const highlightedPolygons = response['highlightedPolygons'];  // Highlighted squares for valid moves
+    const winner = response['winner'];
+
+    if (response['gameOver']) {
+        showGameOverPopup(winner);  // Show Game Over popup if the game is over
     }
 
-    updatePieces(board);
-    displayPossibleMoves(highlightedPolygons);
+    updatePieces(board);  // Render the pieces
+    displayPossibleMoves(highlightedPolygons);  // Highlight possible moves
 }
 
+// Render the pieces on the board
 function updatePieces(board) {
-    for (const polygonId in board) {
-        const value = board[polygonId];
-        const pieceColor = value[0];
-        const pieceToken = value[1];
+    const piecesGroup = document.getElementById('pieces');
+    piecesGroup.innerHTML = '';  // Clear existing pieces
 
-        displayPiece(polygonId, pieceToken, pieceColor);
+    for (const pos in board) {
+        const value = board[pos];  // Get piece details for this position
+        const pieceColor = value[0];  // White or Black
+        const pieceToken = value[1];  // Type of piece (e.g., 'R', 'P')
 
+        // Convert position (e.g., 'a1', 'd4') to coordinates
+        const col = pos.charCodeAt(0) - 97;  // Convert 'a' -> 0, 'b' -> 1, ...
+        const row = 8 - parseInt(pos[1]);  // Convert '1' -> 7, '2' -> 6, ...
+
+        const x = col * 120 + 60;  // Calculate X position for piece
+        const y = row * 120 + 60;  // Calculate Y position for piece
+
+        const textElement = getPieceText(x, y, pieceColor, pieceToken);
+        piecesGroup.appendChild(textElement);  // Add piece to the SVG group
     }
 }
 
-/**
- * displays the piece as a textElement inside svg
- * @param polygonId Id of the polygon, e.g. Ba1, Ba2, ...
- * @param pieceToken token of the piece, e.g. R, N, B, K, Q, P
- * @param pieceColor color as single character, e.g. R, G, B
- */
-function displayPiece(polygonId, pieceToken, pieceColor) {
-    const polygon = document.getElementById(polygonId);
-    const existingText = polygon.nextElementSibling; // Assuming the existing text is the immediate next sibling
-
-    const points = polygon.points;
-    let x = (points.getItem(0).x + points.getItem(2).x) / 2;
-    let y = (points.getItem(0).y + points.getItem(2).y) / 2;
-
-    const textElement = getPieceText(x, y, pieceColor, pieceToken);
-
-    // Check if there is existing text, and insert the new text after it
-    if (existingText) {
-        polygon.parentNode.insertBefore(textElement, existingText.nextSibling);
-    }
-    else {
-        // If there's no existing text, just insert the new text after the polygon
-        polygon.parentNode.insertBefore(textElement, polygon.nextSibling);
-    }
-}
-
-/**
- * creates a new svg text element displaying the polygon name
- * @param polygonId the id of the polygon for which label to be added
- */
-function insertLabels(polygonId) {
-        const polygon = document.getElementById(polygonId);
-        const points = polygon.points;
-        let x = (points.getItem(0).x + points.getItem(2).x) / 2;
-        let y = (points.getItem(0).y + points.getItem(2).y) / 2;
-        const textElement = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-        textElement.setAttribute('x', x);
-        textElement.setAttribute('y', y);
-        textElement.setAttribute("text-anchor", "middle");
-        textElement.setAttribute("dominant-baseline", "middle");
-        textElement.setAttribute('fill', 'rgba(255,255,255,0.8');
-        textElement.setAttribute('font-size', '14');
-        textElement.setAttribute('font-weight', 'bold');
-        textElement.textContent = polygonId.toUpperCase();
-        polygon.parentNode.insertBefore(textElement, polygon.nextSibling);
-}
-
-/**
- * creates a new svg text element displaying a piece
- * @param x coordinate of the text element
- * @param y coordinate of the text element
- * @param color color of the displayed piece, e.g. R, G, B
- * @param pieceToken token of the displayed piece, e.g. R, N, B, K, Q, P
- * @returns {SVGTextElement}
- */
+// Helper function to create a text element for a piece
 function getPieceText(x, y, color, pieceToken) {
     const textElement = document.createElementNS('http://www.w3.org/2000/svg', 'text');
     textElement.setAttribute('x', x);
     textElement.setAttribute('y', y);
     textElement.setAttribute("text-anchor", "middle");
     textElement.setAttribute("dominant-baseline", "middle");
-    textElement.setAttribute('fill', colorMap[color]);
+    textElement.setAttribute('fill', colorMap[color] === 'White' ? 'white' : 'black');  // Set piece color
     textElement.setAttribute('font-size', '50');
     textElement.setAttribute('font-weight', 'bold');
-    textElement.textContent = pieceMap[pieceToken];
-    textElement.setAttribute('class', theme);
-
+    textElement.textContent = pieceMap[pieceToken];  // Set piece symbol
+    textElement.setAttribute('class', theme);  // Apply the selected font theme
+    console.log(`Rendering piece: ${pieceToken} at (${x}, ${y}) with color ${colorMap[color]}`);
     return textElement;
 }
 
-/**
- * removes all displayed pieces from the chessboard
- */
+// Clear all pieces from the board
 function clearBoard() {
-    const textElements = document.querySelectorAll('text');
-    textElements.forEach((textElement) => {
-        if (textElement.classList.contains(theme)) {
-            textElement.remove();
-        }
-    });
+    const piecesGroup = document.getElementById('pieces');
+    piecesGroup.innerHTML = '';
 }
 
-/**
- * called when the html document finished loading
- */
-function bodyLoaded(){
-    console.log("Body loaded");
-    requestUpdatedBoard();
-    requestCurrentPlayer()
-
-    const polygons = document.querySelectorAll('polygon');
-
-    polygons.forEach(function (polygon) {
-        insertLabels(polygon.id)
-        polygon.addEventListener('click', function () {
-            const polygonId = polygon.id;
-            sendPolygonClicked(polygonId);
-            requestCurrentPlayer();
-        });
-    });
-}
-
-/**
- * post the id of the clicked Polygon to the server on /onClick endpoint
- * @param polygonId id of the clicked polygon, e.g. Ra1, Gb3, ...
- */
-function sendPolygonClicked(polygonId){
+// Send the clicked polygon (square) to the server for processing
+function sendPolygonClicked(polygonId) {
     const request = new XMLHttpRequest();
     request.open("POST", "/onClick", false);
     request.send(polygonId);
@@ -223,25 +122,8 @@ function sendPolygonClicked(polygonId){
     }
 }
 
-/**
- * requests all possible Moves of a piece and highlights them on the board
- * @param polygonId id of the polygon on which the piece is located
- */
-function requestHighlightedPolygons(polygonId){
-    const request = new XMLHttpRequest();
-    request.open("GET", "/allMoves", false);
-    request.send(polygonId);
-
-    if (request.status === 200) {
-        const data = JSON.parse(request.response);
-        displayPossibleMoves(data);
-    }
-}
-
-/**
- * requests the new board state and displays it
- */
-function requestUpdatedBoard(){
+// Request the updated board from the server
+function requestUpdatedBoard() {
     console.log("Request Current Board");
     const request = new XMLHttpRequest();
     request.open("GET", "/board", false);
@@ -249,32 +131,44 @@ function requestUpdatedBoard(){
 
     if (request.status === 200) {
         const data = JSON.parse(request.response);
-        updatePieces(data);
+        updateBoard(data);
     }
 }
 
-/**
- * requests the current player and displays it
- */
-function requestCurrentPlayer(){
+// Request the current player from the server
+function requestCurrentPlayer() {
     const request = new XMLHttpRequest();
     request.open("GET", "/currentPlayer", false);
     request.send(null);
 
     if (request.status === 200) {
         const player = request.response;
-        updateCurrenPlayer(player);
+        updateCurrentPlayer(player);  // Update the player on the board
     }
 }
 
+// Show a game over popup when the game ends
 function showGameOverPopup(winner) {
     const colourName = colorMap[winner];
     const playerName = localStorage.getItem(colourName);
     document.getElementById('popup').style.display = 'block';
-    const winnerText = playerName + " (" + colourName + ") has won the Game!"
+    const winnerText = `${playerName} (${colourName}) has won the Game!`;
     document.getElementById('winner').innerText = winnerText;
 }
 
+// Close the game over popup
 function closePopup() {
     document.getElementById('popup').style.display = 'none';
+}
+
+// Display possible moves for a piece (highlighted squares)
+function displayPossibleMoves(highlightedPolygons) {
+    const board = document.getElementById('board');
+
+    highlightedPolygons.forEach(polygonId => {
+        const square = document.getElementById(polygonId);
+        if (square) {
+            square.setAttribute('fill', 'rgba(255, 255, 0, 0.5)');  // Highlight the square with yellow
+        }
+    });
 }

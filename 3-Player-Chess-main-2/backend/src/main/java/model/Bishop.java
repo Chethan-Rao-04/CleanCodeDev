@@ -2,17 +2,13 @@ package model;
 
 import common.Colour;
 import common.Direction;
-import common.InvalidPositionException;
 import common.Position;
-
 import utility.Log;
 
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import static utility.MovementUtil.step;
 import static utility.MovementUtil.stepOrNull;
 
 /**
@@ -36,9 +32,12 @@ public class Bishop extends BasePiece {
      **/
     @Override
     protected void setupDirections() {
-        this.directions = new Direction[][] {{Direction.FORWARD,Direction.LEFT},{Direction.FORWARD,Direction.RIGHT},
-                {Direction.LEFT,Direction.FORWARD},{Direction.RIGHT,Direction.FORWARD},{Direction.BACKWARD,Direction.LEFT},
-                {Direction.BACKWARD,Direction.RIGHT},{Direction.LEFT,Direction.BACKWARD},{Direction.RIGHT,Direction.BACKWARD}};
+        this.directions = new Direction[][] {
+                {Direction.FORWARD, Direction.LEFT},
+                {Direction.FORWARD, Direction.RIGHT},
+                {Direction.BACKWARD, Direction.LEFT},
+                {Direction.BACKWARD, Direction.RIGHT}
+        };
     }
 
     /**
@@ -48,37 +47,20 @@ public class Bishop extends BasePiece {
      * @return Set of possible positions a piece is allowed to move
      * */
     @Override
-    public Set<Position> getHighlightPolygons(Map<Position, BasePiece> boardMap, Position start) {
-        Collection<Position> wallPiecePositions = getWallPieceMapping(boardMap).values();
+    public Set<Position> getPossibleMoves(Map<Position, BasePiece> boardMap, Position start) {
         Set<Position> positionSet = new HashSet<>();
-
         BasePiece mover = this;
         Direction[][] steps = this.directions;
 
         for (Direction[] step : steps) {
             Position tmp = stepOrNull(mover, step, start);
-            while(tmp != null && !positionSet.contains(tmp)
-                    && (boardMap.get(tmp)==null || (boardMap.get(tmp) instanceof Wall && boardMap.get(tmp).getColour() == mover.getColour()))) {
-                Log.d(TAG, "tmp: "+tmp);
-                positionSet.add(tmp); // to prevent same position to add in list again
-                tmp = stepOrNull(mover, step, tmp, tmp.getColour()!=start.getColour());
-            }
-
-            // found a piece diagonally
-            if(tmp!=null && boardMap.get(tmp)!=null) {
-                if(boardMap.get(tmp).getColour()!=mover.getColour()) {
-                    Log.d(TAG, "Opponent tmp: " + tmp);
-                    positionSet.add(tmp);
-                } else {
-                    Log.d(TAG, "Mine tmp: " + tmp);
+            while (tmp != null && !positionSet.contains(tmp) && (boardMap.get(tmp) == null || boardMap.get(tmp).getColour() != mover.getColour())) {
+                Log.d(TAG, "tmp: " + tmp);
+                positionSet.add(tmp);
+                if (boardMap.get(tmp) != null && boardMap.get(tmp).getColour() != mover.getColour()) {
+                    break;
                 }
-            }
-        }
-
-        for(Position position: wallPiecePositions) {
-            if(positionSet.contains(position)) {
-                Log.d(TAG, "Removed a wallPiecePos: "+position);
-                positionSet.remove(position);
+                tmp = stepOrNull(mover, step, tmp);
             }
         }
 
@@ -91,6 +73,6 @@ public class Bishop extends BasePiece {
      * */
     @Override
     public String toString() {
-        return this.colour.toString()+"B";
+        return this.colour.toString() + "B";
     }
 }

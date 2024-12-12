@@ -39,7 +39,7 @@ public class BoardAdapter {
      * @param possibleMoves a list of positions to highlight
      * @return list of strings
      **/
-    public static List<String> convertHighlightPolygonsToViewBoard(Set<Position> possibleMoves) {
+    public static List<String> convertHighlightSquaresToViewBoard(Set<Position> possibleMoves) {
         List<String> moves = new ArrayList<>();
         if(possibleMoves == null) {
             return Collections.emptyList();
@@ -51,39 +51,23 @@ public class BoardAdapter {
         return moves;
     }
 
-
     /**
-     * Calculates unique ID for each polygon based on label
-     * @param  polygon The unique label of the polygon which is clicked by player
+     * Calculates unique ID for each square based on label
+     * @param  square The unique label of the square which is clicked by player
      * @return unique ID
      * */
-    public static int calculatePolygonId(String polygon) throws InvalidPositionException {
-
-        if(polygon==null || polygon.length() != 3 || !Character.isAlphabetic(polygon.charAt(0))
-                || !Character.isAlphabetic(polygon.charAt(1)) || !Character.isDigit(polygon.charAt(2))) {
-            throw new InvalidPositionException("Invalid String position: "+polygon);
+    public static int calculateSquareId(String square) throws InvalidPositionException {
+        if(square == null || square.length() != 2 || !Character.isAlphabetic(square.charAt(0)) || !Character.isDigit(square.charAt(1))) {
+            throw new InvalidPositionException("Invalid String position: " + square);
         }
 
-        char firstChar = Character.toLowerCase(polygon.charAt(0));
-        char secondChar = Character.toLowerCase(polygon.charAt(1));
-        int number = polygon.charAt(2)-'0';
-        Log.d("BoardAdapter", "firstChar: "+firstChar+", secondChar: "+secondChar+", number: "+number);
-        boolean isFirstCharInvalid = (firstChar != 'g' && firstChar != 'r' && firstChar != 'b');
-        boolean isSecondCharInvalid = (secondChar < 'a' || secondChar > 'h');
-        boolean isNumberOutOfRange = (number < 1 || number > 4);
-        if(isFirstCharInvalid || isSecondCharInvalid || isNumberOutOfRange) {
-            throw new InvalidPositionException("Invalid String position: "+polygon);
+        char column = Character.toLowerCase(square.charAt(0));
+        int row = square.charAt(1) - '1';
+        if(column < 'a' || column > 'h' || row < 0 || row > 7) {
+            throw new InvalidPositionException("Invalid String position: " + square);
         }
 
-        char color = polygon.charAt(0);
-        int y = polygon.charAt(1) - 'a';
-        int x = polygon.charAt(2) - '1';
-        int offset = 0;
-        if(color == 'G'){
-            offset = 32;
-        }else if(color == 'R'){
-            offset = 64;
-        }
-        return offset + x + 4*y;
+        int columnIndex = column - 'a';
+        return row * 8 + columnIndex;
     }
 }

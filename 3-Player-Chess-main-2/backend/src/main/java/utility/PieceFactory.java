@@ -2,13 +2,11 @@ package utility;
 import common.Colour;
 import model.BasePiece;
 import model.Bishop;
-import model.Jester;
 import model.King;
 import model.Knight;
 import model.Pawn;
 import model.Queen;
 import model.Rook;
-import model.Wall;
 
 /**
  * PieceFactory - helper class to create objects chess pieces
@@ -35,10 +33,6 @@ public class PieceFactory {
                 return new Rook(colour);
             case "pawn":
                 return new Pawn(colour);
-            case "jester":
-                return new Jester(colour);
-            case "wall":
-                return new Wall(colour);
             default:
                 throw new IllegalArgumentException("Invalid chess piece type: " + type);
         }
