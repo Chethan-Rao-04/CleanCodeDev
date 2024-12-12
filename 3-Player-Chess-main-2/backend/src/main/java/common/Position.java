@@ -1,158 +1,113 @@
 package common;
 
 /**
- * Class containing the polygons positions enums of the chess board
+ * Class containing the positions enums of the chess board
  * also, methods to access the properties.
  **/
-public enum Position{
- 
-  BA1(Colour.BLUE,0,0), BA2(Colour.BLUE,1,0), BA3(Colour.BLUE,2,0), BA4(Colour.BLUE,3,0),
-  BB1(Colour.BLUE,0,1), BB2(Colour.BLUE,1,1), BB3(Colour.BLUE,2,1), BB4(Colour.BLUE,3,1),
-  BC1(Colour.BLUE,0,2), BC2(Colour.BLUE,1,2), BC3(Colour.BLUE,2,2), BC4(Colour.BLUE,3,2),
-  BD1(Colour.BLUE,0,3), BD2(Colour.BLUE,1,3), BD3(Colour.BLUE,2,3), BD4(Colour.BLUE,3,3),
-  BE1(Colour.BLUE,0,4), BE2(Colour.BLUE,1,4), BE3(Colour.BLUE,2,4), BE4(Colour.BLUE,3,4),
-  BF1(Colour.BLUE,0,5), BF2(Colour.BLUE,1,5), BF3(Colour.BLUE,2,5), BF4(Colour.BLUE,3,5),
-  BG1(Colour.BLUE,0,6), BG2(Colour.BLUE,1,6), BG3(Colour.BLUE,2,6), BG4(Colour.BLUE,3,6),
-  BH1(Colour.BLUE,0,7), BH2(Colour.BLUE,1,7), BH3(Colour.BLUE,2,7), BH4(Colour.BLUE,3,7),
+public enum Position {
+  A1(Colour.WHITE, 0, 0), A2(Colour.WHITE, 1, 0), A3(Colour.WHITE, 2, 0), A4(Colour.WHITE, 3, 0),
+  A5(Colour.WHITE, 4, 0), A6(Colour.WHITE, 5, 0), A7(Colour.WHITE, 6, 0), A8(Colour.WHITE, 7, 0),
+  B1(Colour.WHITE, 0, 1), B2(Colour.WHITE, 1, 1), B3(Colour.WHITE, 2, 1), B4(Colour.WHITE, 3, 1),
+  B5(Colour.WHITE, 4, 1), B6(Colour.WHITE, 5, 1), B7(Colour.WHITE, 6, 1), B8(Colour.WHITE, 7, 1),
+  C1(Colour.WHITE, 0, 2), C2(Colour.WHITE, 1, 2), C3(Colour.WHITE, 2, 2), C4(Colour.WHITE, 3, 2),
+  C5(Colour.WHITE, 4, 2), C6(Colour.WHITE, 5, 2), C7(Colour.WHITE, 6, 2), C8(Colour.WHITE, 7, 2),
+  D1(Colour.WHITE, 0, 3), D2(Colour.WHITE, 1, 3), D3(Colour.WHITE, 2, 3), D4(Colour.WHITE, 3, 3),
+  D5(Colour.WHITE, 4, 3), D6(Colour.WHITE, 5, 3), D7(Colour.WHITE, 6, 3), D8(Colour.WHITE, 7, 3),
+  E1(Colour.WHITE, 0, 4), E2(Colour.WHITE, 1, 4), E3(Colour.WHITE, 2, 4), E4(Colour.WHITE, 3, 4),
+  E5(Colour.WHITE, 4, 4), E6(Colour.WHITE, 5, 4), E7(Colour.WHITE, 6, 4), E8(Colour.WHITE, 7, 4),
+  F1(Colour.WHITE, 0, 5), F2(Colour.WHITE, 1, 5), F3(Colour.WHITE, 2, 5), F4(Colour.WHITE, 3, 5),
+  F5(Colour.WHITE, 4, 5), F6(Colour.WHITE, 5, 5), F7(Colour.WHITE, 6, 5), F8(Colour.WHITE, 7, 5),
+  G1(Colour.WHITE, 0, 6), G2(Colour.WHITE, 1, 6), G3(Colour.WHITE, 2, 6), G4(Colour.WHITE, 3, 6),
+  G5(Colour.WHITE, 4, 6), G6(Colour.WHITE, 5, 6), G7(Colour.WHITE, 6, 6), G8(Colour.WHITE, 7, 6),
+  H1(Colour.WHITE, 0, 7), H2(Colour.WHITE, 1, 7), H3(Colour.WHITE, 2, 7), H4(Colour.WHITE, 3, 7),
+  H5(Colour.WHITE, 4, 7), H6(Colour.WHITE, 5, 7), H7(Colour.WHITE, 6, 7), H8(Colour.WHITE, 7, 7),
 
-  GA1(Colour.GREEN,0,0), GA2(Colour.GREEN,1,0), GA3(Colour.GREEN,2,0), GA4(Colour.GREEN,3,0),
-  GB1(Colour.GREEN,0,1), GB2(Colour.GREEN,1,1), GB3(Colour.GREEN,2,1), GB4(Colour.GREEN,3,1),
-  GC1(Colour.GREEN,0,2), GC2(Colour.GREEN,1,2), GC3(Colour.GREEN,2,2), GC4(Colour.GREEN,3,2),
-  GD1(Colour.GREEN,0,3), GD2(Colour.GREEN,1,3), GD3(Colour.GREEN,2,3), GD4(Colour.GREEN,3,3),
-  GE1(Colour.GREEN,0,4), GE2(Colour.GREEN,1,4), GE3(Colour.GREEN,2,4), GE4(Colour.GREEN,3,4),
-  GF1(Colour.GREEN,0,5), GF2(Colour.GREEN,1,5), GF3(Colour.GREEN,2,5), GF4(Colour.GREEN,3,5),
-  GG1(Colour.GREEN,0,6), GG2(Colour.GREEN,1,6), GG3(Colour.GREEN,2,6), GG4(Colour.GREEN,3,6),
-  GH1(Colour.GREEN,0,7), GH2(Colour.GREEN,1,7), GH3(Colour.GREEN,2,7), GH4(Colour.GREEN,3,7),
+  A8B(Colour.BLACK, 0, 0), A7B(Colour.BLACK, 1, 0), A6B(Colour.BLACK, 2, 0), A5B(Colour.BLACK, 3, 0),
+  A4B(Colour.BLACK, 4, 0), A3B(Colour.BLACK, 5, 0), A2B(Colour.BLACK, 6, 0), A1B(Colour.BLACK, 7, 0),
+  B8B(Colour.BLACK, 0, 1), B7B(Colour.BLACK, 1, 1), B6B(Colour.BLACK, 2, 1), B5B(Colour.BLACK, 3, 1),
+  B4B(Colour.BLACK, 4, 1), B3B(Colour.BLACK, 5, 1), B2B(Colour.BLACK, 6, 1), B1B(Colour.BLACK, 7, 1),
+  C8B(Colour.BLACK, 0, 2), C7B(Colour.BLACK, 1, 2), C6B(Colour.BLACK, 2, 2), C5B(Colour.BLACK, 3, 2),
+  C4B(Colour.BLACK, 4, 2), C3B(Colour.BLACK, 5, 2), C2B(Colour.BLACK, 6, 2), C1B(Colour.BLACK, 7, 2),
+  D8B(Colour.BLACK, 0, 3), D7B(Colour.BLACK, 1, 3), D6B(Colour.BLACK, 2, 3), D5B(Colour.BLACK, 3, 3),
+  D4B(Colour.BLACK, 4, 3), D3B(Colour.BLACK, 5, 3), D2B(Colour.BLACK, 6, 3), D1B(Colour.BLACK, 7, 3),
+  E8B(Colour.BLACK, 0, 4), E7B(Colour.BLACK, 1, 4), E6B(Colour.BLACK, 2, 4), E5B(Colour.BLACK, 3, 4),
+  E4B(Colour.BLACK, 4, 4), E3B(Colour.BLACK, 5, 4), E2B(Colour.BLACK, 6, 4), E1B(Colour.BLACK, 7, 4),
+  F8B(Colour.BLACK, 0, 5), F7B(Colour.BLACK, 1, 5), F6B(Colour.BLACK, 2, 5), F5B(Colour.BLACK, 3, 5),
+  F4B(Colour.BLACK, 4, 5), F3B(Colour.BLACK, 5, 5), F2B(Colour.BLACK, 6, 5), F1B(Colour.BLACK, 7, 5),
+  G8B(Colour.BLACK, 0, 6), G7B(Colour.BLACK, 1, 6), G6B(Colour.BLACK, 2, 6), G5B(Colour.BLACK, 3, 6),
+  G4B(Colour.BLACK, 4, 6), G3B(Colour.BLACK, 5, 6), G2B(Colour.BLACK, 6, 6), G1B(Colour.BLACK, 7, 6),
+  H8B(Colour.BLACK, 0, 7), H7B(Colour.BLACK, 1, 7), H6B(Colour.BLACK, 2, 7), H5B(Colour.BLACK, 3, 7),
+  H4B(Colour.BLACK, 4, 7), H3B(Colour.BLACK, 5, 7), H2B(Colour.BLACK, 6, 7), H1B(Colour.BLACK, 7, 7);
 
-  RA1(Colour.RED,0,0), RA2(Colour.RED,1,0), RA3(Colour.RED,2,0), RA4(Colour.RED,3,0),
-  RB1(Colour.RED,0,1), RB2(Colour.RED,1,1), RB3(Colour.RED,2,1), RB4(Colour.RED,3,1),
-  RC1(Colour.RED,0,2), RC2(Colour.RED,1,2), RC3(Colour.RED,2,2), RC4(Colour.RED,3,2),
-  RD1(Colour.RED,0,3), RD2(Colour.RED,1,3), RD3(Colour.RED,2,3), RD4(Colour.RED,3,3),
-  RE1(Colour.RED,0,4), RE2(Colour.RED,1,4), RE3(Colour.RED,2,4), RE4(Colour.RED,3,4),
-  RF1(Colour.RED,0,5), RF2(Colour.RED,1,5), RF3(Colour.RED,2,5), RF4(Colour.RED,3,5),
-  RG1(Colour.RED,0,6), RG2(Colour.RED,1,6), RG3(Colour.RED,2,6), RG4(Colour.RED,3,6),
-  RH1(Colour.RED,0,7), RH2(Colour.RED,1,7), RH3(Colour.RED,2,7), RH4(Colour.RED,3,7);
+  private final Colour colour;
+  private final int row;
+  private final int column;
 
-  private final Colour colour; //red blue green
-  private final int row; //0-3
-  private final int column; //0-7
-
-  /**
-   * Position enum constructor
-   **/
-  Position(Colour colour, int row, int column){
-    this.colour = colour; this.row = row; this.column = column;
+  Position(Colour colour, int row, int column) {
+    this.colour = colour;
+    this.row = row;
+    this.column = column;
   }
 
-  /**
-   * Method to get the colour
-   * @return Colour
-   **/
-  public Colour getColour(){return colour;}
+  public Colour getColour() {
+    return colour;
+  }
 
-  /**
-   * Method to get the Row number
-   * @return int row number
-   **/
-  public int getRow(){return row;}
+  public int getRow() {
+    return row;
+  }
 
-  /**
-   * Method to get the column number
-   * @return int column number
-   **/
-  public int getColumn(){return column;}
+  public int getColumn() {
+    return column;
+  }
 
-  /**
-   * Method to get the string representation of the enum
-   * @return string representation of the polygon ID
-   **/
   @Override
   public String toString() {
-    return colour.toString()+getColumnChar(column)+(row+1);
+    return colour.toString() + getColumnChar(column) + (row + 1);
   }
 
-  /**
-   * Gets the position corresponding to the specified colour, row and column.
-   * @return the position of the specified colour, row and column
-   * @throws InvalidPositionException if outside the bounds of the board.
-   **/
   public static Position get(Colour colour, int row, int column) throws InvalidPositionException {
-    int index= row+4*column;
-    if(index>=0 && index<32){
-      switch(colour){
-        case BLUE: return Position.values()[index];
-        case GREEN: return Position.values()[index+32];
-        case RED: return Position.values()[index+64];
+    for (Position position : Position.values()) {
+      if (position.colour == colour && position.row == row && position.column == column) {
+        return position;
       }
     }
     throw new InvalidPositionException("No such position.");
   }
 
-  /**
-   * Gets the position corresponding to the specified colour, row and column.
-   * @return the position of the specified polygon Index
-   * @throws InvalidPositionException if outside the bounds of the board.
-   **/
-  public static Position get(int polygonIndex) throws InvalidPositionException {
-      if(polygonIndex >=0 && polygonIndex <=95) {
-        return Position.values()[polygonIndex];
-      }
-    throw new InvalidPositionException("No such position.");
-  }
-
-  /**
-   * Get the position of next neighbour after a step
-   * @param direction direction input to get its neighbour
-   * @return Position the position of the specified polygon Index
-   * @throws InvalidPositionException if outside the bounds of the board.
-   **/
-  public Position neighbour(Direction direction) throws InvalidPositionException {
-    switch(direction){
-      case FORWARD:
-        if(row<3) {
-          return get(colour, row+1, column);
-        }
-        if(column<4) {
-          return get(Colour.values()[(colour.ordinal()+1)%3], 3, 7-column);
-        }
-        return get(Colour.values()[(colour.ordinal()+2)%3],3,7-column);
-      case BACKWARD:
-        if(row==0) {
-          throw new InvalidPositionException("Moved off board");
-        }
-        return get(colour,row-1,column);
-      case LEFT:
-        if(column==0) {
-          throw new InvalidPositionException("Moved off board");
-        }
-        return get(colour,row,column-1);
-      case RIGHT:
-        if(column==7) {
-          throw new InvalidPositionException("Moved off board");
-        }
-        return get(colour,row,column+1);
-    }
-    throw new InvalidPositionException("Unreachable code?");
-  }
-
-  /**
-   * Given the column input, fetch the character linked
-   * @param column direction input to get its neighbour
-   * @return char
-   **/
   private char getColumnChar(int column) {
     switch (column) {
-        case 0: return 'a';
-        case 1: return 'b';
-        case 2: return 'c';
-        case 3: return 'd';
-        case 4: return 'e';
-        case 5: return 'f';
-        case 6: return 'g';
-        case 7: return 'h';
-        default: return '\0';
+      case 0: return 'a';
+      case 1: return 'b';
+      case 2: return 'c';
+      case 3: return 'd';
+      case 4: return 'e';
+      case 5: return 'f';
+      case 6: return 'g';
+      case 7: return 'h';
+      default: return '\0';
     }
   }
+
+  public Position neighbour(Direction direction) throws InvalidPositionException {
+    int newRow = this.row;
+    int newColumn = this.column;
+
+    switch (direction) {
+      case FORWARD:
+        newRow += (this.colour == Colour.WHITE) ? 1 : -1;
+        break;
+      case BACKWARD:
+        newRow += (this.colour == Colour.WHITE) ? -1 : 1;
+        break;
+      case LEFT:
+        newColumn -= 1;
+        break;
+      case RIGHT:
+        newColumn += 1;
+        break;
+    }
+
+    return Position.get(this.colour, newRow, newColumn);
+  }
 }
-
-

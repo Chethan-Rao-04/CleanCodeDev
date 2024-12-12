@@ -4,75 +4,61 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Class GameState to communicate with the webapp.
- * All the info regarding highlighted polygons, winner is
- * accessed with this method
+ * Class representing the state of the game.
  */
 public class GameState {
-
-    private final List<String> highlightedPolygons;
-    private final Map<String, String> board;
-    private boolean isGameOver;
+    private Map<String, String> board;
+    private List<String> highlightSquares;
+    private boolean gameOver;
     private String winner;
 
-    /**
-     * GameState constructor
-     */
-    public GameState(Map<String, String> board, List<String> highlightedPolygons) {
+    public GameState(Map<String, String> board, List<String> highlightSquares) {
         this.board = board;
-        this.highlightedPolygons = highlightedPolygons;
+        this.highlightSquares = highlightSquares;
+        this.gameOver = false;
+        this.winner = null;
     }
 
-    /**
-     * Method returns list of polygons to be highlighted
-     * @return List of Strings
-     */
-    public List<String> getHighlightedPolygons() {
-        return highlightedPolygons;
-    }
-
-    /**
-     * Method to share the board info to the web app
-     * @return Map with board position and piece
-     */
     public Map<String, String> getBoard() {
         return board;
     }
 
-    /**
-     * Method to share the winner info to the web app
-     * @param winner is set
-     */
+    public void setBoard(Map<String, String> board) {
+        this.board = board;
+    }
+
+    public List<String> getHighlightSquares() {
+        return highlightSquares;
+    }
+
+    public void setHighlightSquares(List<String> highlightSquares) {
+        this.highlightSquares = highlightSquares;
+    }
+
+    public boolean isGameOver() {
+        return gameOver;
+    }
+
     public void setGameOver(String winner) {
-        this.isGameOver = true;
+        this.gameOver = true;
         this.winner = winner;
     }
 
-    /**
-     * method to check if the game is over.
-     * @return boolean isGameOver
-     **/
-    public boolean isGameOver() {
-        return this.isGameOver;
-    }
-
-    /**
-     * method to get the winner.
-     * @return String winner
-     **/
     public String getWinner() {
-        return this.winner;
+        return winner;
     }
 
-    /**
-     * method to get the highlighted polygons and the board.
-     * @return String
-     **/
+    public void setWinner(String winner) {
+        this.winner = winner;
+    }
+
     @Override
     public String toString() {
         return "GameState{" +
-                "highlightedPolygons=" + highlightedPolygons +
-                ", board=" + board +
+                "board=" + board +
+                ", highlightSquares=" + highlightSquares +
+                ", gameOver=" + gameOver +
+                ", winner='" + winner + '\'' +
                 '}';
     }
 }

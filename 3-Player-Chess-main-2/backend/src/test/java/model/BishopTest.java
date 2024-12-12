@@ -37,7 +37,7 @@ import static org.junit.jupiter.api.Assertions.*;
     */
     @Test
      void setupDirections_initPieceDirectionsIsEmpty_False() {
-        BasePiece bishop = new Bishop(Colour.BLUE);
+        BasePiece bishop = new Bishop(Colour.BLACK);
         assertNotEquals(0, bishop.directions.length);
     }
 
@@ -56,7 +56,7 @@ import static org.junit.jupiter.api.Assertions.*;
         BasePiece bishop = new Bishop(startPosition.getColour());
         boardMap.put(startPosition, bishop);
 
-       Set<Position> actualBishopMoves = bishop.getHighlightPolygons(boardMap, startPosition);
+       Set<Position> actualBishopMoves = bishop.getPossibleMoves(boardMap, startPosition);
        assertTrue(actualBishopMoves.contains(endPosition));
     }
 
@@ -75,7 +75,7 @@ import static org.junit.jupiter.api.Assertions.*;
         BasePiece bishop = new Bishop(startPosition.getColour());
         boardMap.put(startPosition, bishop);
 
-       Set<Position> actualBishopMoves = bishop.getHighlightPolygons(boardMap, startPosition);
+       Set<Position> actualBishopMoves = bishop.getPossibleMoves(boardMap, startPosition);
        assertFalse(actualBishopMoves.contains(endPosition));
     }
 
@@ -85,7 +85,7 @@ import static org.junit.jupiter.api.Assertions.*;
      * @param position Initial position of the bishop
      */
     @ParameterizedTest
-    @EnumSource(value = Position.class, names = {"BC1", "BF1", "RC1", "RF1", "GC1", "GF1"})
+    @EnumSource(value = Position.class, names = {"ad1", "b1", "c1", "d1", "e1", "g1"})
      void check_bishopPresentInInitialPosition_True(Position position) {
         BasePiece piece = boardMap.get(position);
         assertInstanceOf(Bishop.class, piece);

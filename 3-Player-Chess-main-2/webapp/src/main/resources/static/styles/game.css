@@ -12,52 +12,15 @@ body {
     src: url(../fonts/DejaVuSans.ttf);
 }
 
-.blue.light:hover, .blue.dark:hover, .red.light:hover, .red.dark:hover, .green.light:hover, .green.dark:hover {
-    fill: lightgrey;
-}
-
-.red.light.highlight, .red.dark.highlight, .blue.light.highlight, .blue.dark.highlight, .green.light.highlight, .green.dark.highlight {
-    fill: lightgrey;
-}
-
-.blue.light {
-    fill:  #d6eaf8;
-}
-
-.blue.dark {
-    fill:  #5dade2
-
-}
-
-.green.light {
-    fill:  #d1f2eb
-}
-
-.green.dark {
-    fill: #76d7c4
-}
-
-.red.light {
-    fill:  #fadbd8
-}
-
-.red.dark {
-    fill:  #ec7063
-}
-
-/*text {*/
-/*    font-family: 'DejaVuSans', sans-serif;*/
-/*}*/
-
-.arialTheme{
+.arialTheme {
     font-family: 'Arial', sans-serif;
 }
 
-.freeSerifTheme{
+.freeSerifTheme {
     font-family: 'FreeSerif', sans-serif;
 }
 
-.dejaVuSansTheme{
+.dejaVuSansTheme {
     font-family: 'DejaVuSans', sans-serif;
 }
 
@@ -84,7 +47,7 @@ body {
     display: flex;
 }
 
-h1{
+h1 {
     width: 100%;
 }
 
@@ -102,4 +65,31 @@ text {
     background-color: #eee;
     border: 2px solid #ccc;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Chessboard styles */
+#board {
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    grid-template-rows: repeat(8, 1fr);
+    gap: 1px;
+    width: 100%;
+    height: 100%;
+}
+
+.square {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+}
+
+.white {
+    background-color: #f0d9b5;
+}
+
+.black {
+    background-color: #b58863;
 }

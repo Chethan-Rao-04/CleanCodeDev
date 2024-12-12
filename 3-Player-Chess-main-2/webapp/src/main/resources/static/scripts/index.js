@@ -1,10 +1,9 @@
 function checkInputs() {
     const pl1 = document.getElementById('pl1').value;
     const pl2 = document.getElementById('pl2').value;
-    const pl3 = document.getElementById('pl3').value;
     const newGameButton = document.getElementById('newgamebtn');
 
-    if (pl1 !== '' && pl2 !== '' && pl3 !== '') {
+    if (pl1 !== '' && pl2 !== '') {
         newGameButton.removeAttribute('disabled');
     } else {
         newGameButton.setAttribute('disabled', 'true');
@@ -14,14 +13,11 @@ function checkInputs() {
 function newGame(){
     const request = new XMLHttpRequest();
     request.open("GET", "/newGame", false);
-    //request.setRequestHeader('Content-Type', 'application/json');
     const pl1 = document.getElementById('pl1').value;
     const pl2 = document.getElementById('pl2').value;
-    const pl3 = document.getElementById('pl3').value;
 
-    localStorage.setItem('Blue', pl1);
-    localStorage.setItem('Green', pl2);
-    localStorage.setItem('Red', pl3);
+    localStorage.setItem('White', pl1);
+    localStorage.setItem('Black', pl2);
 
     request.send(null);
 
