@@ -41,7 +41,7 @@ function updateCurrentPlayer(color) {
     const playerName = localStorage.getItem(colourName);
 
     const p_name = document.getElementById('pl-name');
-    p_name.textContent = playerName || 'Unknown';
+    p_name.textContent = playerName || 'Current Player';
 
     const p_colour = document.getElementById('pl-colour');
     p_colour.style.color = colourName === 'White' ? '#FFFFFF' : '#000000'; // White or Black
@@ -122,15 +122,17 @@ function clearBoard() {
 // Send the clicked square to the server for processing
 function sendSquareClicked(squareId) {
     const request = new XMLHttpRequest();
-    request.open("POST", "/onClick", false);
-    request.send(squareId);
-
+    request.open("POST", "/onClick", true);
+    request.setRequestHeader("Content-Type", "application/json");  // Ensure it's JSON
+    request.send(JSON.stringify({ squareId: squareId }));
+    request.onload = function() {
     if (request.status === 200) {
-        const data = JSON.parse(request.response);
+        const data = JSON.parse(request.responseText);
         updateBoard(data);
     } else {
         console.error("Failed to send square click:", request.status, request.statusText);
     }
+    };
 }
 
 // Request the updated board from the server

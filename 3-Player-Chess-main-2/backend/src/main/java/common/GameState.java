@@ -19,6 +19,9 @@ public class GameState {
         this.winner = null;
     }
 
+    public GameState(Map<String, String> board, List<String> highlightSquares, boolean gameOver, String winner) {
+    }
+
     public Map<String, String> getBoard() {
         return board;
     }
