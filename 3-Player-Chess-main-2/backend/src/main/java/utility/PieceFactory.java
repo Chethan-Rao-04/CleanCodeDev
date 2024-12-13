@@ -33,6 +33,7 @@ public class PieceFactory {
                 return new Rook(colour);
             case "pawn":
                 return new Pawn(colour);
+
             default:
                 throw new IllegalArgumentException("Invalid chess piece type: " + type);
         }
