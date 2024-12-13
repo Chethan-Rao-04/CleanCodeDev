@@ -23,18 +23,27 @@ public class GameController {
 
     @PostMapping("/onClick")
     public GameState handleMove(@RequestBody String polygonText) throws InvalidPositionException {
+        if (game == null) {
+            throw new IllegalStateException("Game has not been started. Please start a new game first.");
+        }
         System.out.println("Polygon: " + polygonText);
         return game.onClick(polygonText);
     }
 
     @GetMapping("/currentPlayer")
     public String handlePlayerTurn() {
+        if (game == null) {
+            throw new IllegalStateException("Game has not been started. Please start a new game first.");
+        }
         System.out.println("Requesting current player");
         return game.getTurn().toString();
     }
 
     @GetMapping("/board")
     public Map<String, String> handleBoardRequest() {
+        if (game == null) {
+            throw new IllegalStateException("Game has not been started. Please start a new game first.");
+        }
         return game.getBoard();
     }
 }

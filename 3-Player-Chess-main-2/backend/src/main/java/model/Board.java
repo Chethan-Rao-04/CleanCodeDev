@@ -32,6 +32,8 @@ public class Board {
         try {
             placeChessPieces(Colour.WHITE);
             placeChessPieces(Colour.BLACK);
+            System.out.println(turn.toString()+boardMap.toString());
+
         } catch (InvalidPositionException e) {
             Log.e(TAG, "InvalidPositionException: " + e.getMessage());
         }
@@ -44,26 +46,28 @@ public class Board {
         // place ROOK
         boardMap.put(Position.get(colour, mainRow, 0), PieceFactory.createPiece("Rook", colour));
         boardMap.put(Position.get(colour, mainRow, 7), PieceFactory.createPiece("Rook", colour));
-
+        System.out.println("Rook" + boardMap.toString());
         // place KNIGHT
         boardMap.put(Position.get(colour, mainRow, 1), PieceFactory.createPiece("Knight", colour));
         boardMap.put(Position.get(colour, mainRow, 6), PieceFactory.createPiece("Knight", colour));
-
+        System.out.println("Knight" +boardMap.toString());
         // place BISHOP
         boardMap.put(Position.get(colour, mainRow, 2), PieceFactory.createPiece("Bishop", colour));
         boardMap.put(Position.get(colour, mainRow, 5), PieceFactory.createPiece("Bishop", colour));
-
+        System.out.println("Bishop" +boardMap.toString());
         // place QUEEN
         boardMap.put(Position.get(colour, mainRow, 3), PieceFactory.createPiece("Queen", colour));
-
+        System.out.println("Queen" +boardMap.toString());
         // place KING
         boardMap.put(Position.get(colour, mainRow, 4), PieceFactory.createPiece("King", colour));
-
+        System.out.println("King" +boardMap.toString());
         // place PAWN
         for (int i = 0; i < 8; i++) {
             boardMap.put(Position.get(colour, pawnRow, i), PieceFactory.createPiece("Pawn", colour));
-        }
+        } System.out.println(boardMap.toString());
     }
+
+
 
     public boolean isGameOver() {
         return gameOver;
@@ -140,8 +144,10 @@ public class Board {
     }
 
     public Map<String, String> getWebViewBoard() {
+        Log.d(TAG, "Board to View Mapping: " + this.boardMap);
         return BoardAdapter.convertModelBoardToViewBoard(this.boardMap);
     }
+
 
     public Set<Position> getPossibleMoves(Position position) {
         BasePiece mover = boardMap.get(position);
